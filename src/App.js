@@ -6,10 +6,11 @@ import { addItem } from  './actions/items';
 class App extends Component {
 
   handleOnClick() {
-    this.props.store.dispatch(addItem());
+    this.props.addItem();
   }
 
   render() {
+    //debugger
     return (
       <div className="App">
         <button onClick={(event) => this.handleOnClick(event)}>
@@ -27,4 +28,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return{
+    addItem: () => {
+      dispatch(addItem());
+    }
+  }
+}
+
+//export default connect(mapStateToProps, /*mapDispatchToProps*/{addItem})(App); //Can use either argument to incorporate dispatch.
+export default connect(state => ({ items: state.items }), { addItem })(App); //Both of these methods work. This one removes the need for "mapStateToProps" and "mapDispatchToProps" functions.
